@@ -1,5 +1,7 @@
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 # This file is based on 陳閒吉's code, thanks a lot
+# Base on smart-restaurant-crawler
 
 import logging
 import requests
@@ -144,7 +146,7 @@ def query_reviews(cid, max_query_times=100, item_per_page=199):
 
     for i in range(max_query_times):
         try:
-            url = f'https://www.google.com/maps/preview/review/listentitiesreviews?authuser=0&hl=zh-TW&gl=tw&pb=!1m2!1y0!2y{cid}!2m2!1i{item_per_page * i}!2i{item_per_page}!'
+            url = f'https://www.google.com/maps/preview/review/listentitiesreviews?authuser=0&hl=zh-TW&gl=tw&pb=!1m2!1y0!2y{cid}!2m2!1i{item_per_page * i}!2i{item_per_page}'
 
             response = requests.request("GET", url, headers=HEADERS)
             # to avoid the first 5 unwanted char
