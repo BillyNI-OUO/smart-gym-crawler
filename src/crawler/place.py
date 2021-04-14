@@ -1,4 +1,8 @@
+"""
+The object used to storage the information of place
+"""
 class place:
+	
 	def __init__(self, place_id, cid_1, cid_2, name, lat, lng, formatted_address):
 		self.place_id = place_id
 		self.cid_1 = cid_1

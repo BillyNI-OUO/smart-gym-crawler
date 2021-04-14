@@ -1,4 +1,4 @@
-from src.crawler import nearby
-l = nearby.nearby2()
+from src.crawler import query
+l = query.nearby2()
 for i in l:
 	print(i)
