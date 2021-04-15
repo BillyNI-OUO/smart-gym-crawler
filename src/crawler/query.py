@@ -1,8 +1,13 @@
 import requests
 import json
+import re
 from src.crawler import constants
-from src.crawler.place import place
+
 from src.crawler import decode 
+
+
+from src.crawler.place import place
+from src.crawler.review import review
 
 def pretty(obj):
     import pprint
@@ -29,6 +34,27 @@ def nearby2(location=(22.0108477, 120.7440363), query_size=3, query_times = 1, k
         data = json.loads(raw_text)
         for i in range(1, len(data[0][1])):
             place_info_list.append(decode.nearby2(data, i))
+    
     return place_info_list
 
 
+def reviews(cid, max_query_times=1, item_per_page=199):
+    review_info_list = []
+    for i in range(max_query_times):
+        url = constants.reviews_url(cid, i, item_per_page)
+        response = requests.request("GET", url, headers=constants.HEADERS)
+        raw_text = response.text.encode('utf8')[4:]
+        data = json.loads(raw_text)
+
+        reviews_data = data[2]
+        for row in reviews_data:
+            review = decode.reviews(row)
+            
+            if review == None:
+                break;
+            review_info_list.append(review)
+
+        if len(reviews_data) < item_per_page:
+            break
+
+    return review_info_list

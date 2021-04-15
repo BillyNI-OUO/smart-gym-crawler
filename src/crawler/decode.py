@@ -1,4 +1,5 @@
 from src.crawler.place import place
+from src.crawler.review import review
 import sys
 def nearby2(data, i = 1):
 	"""
@@ -35,3 +36,14 @@ def nearby2(data, i = 1):
 		return place(place_id, cid_1, cid_2, name, lat, lng, formatted_address)
 	except Exception as e:
 		sys.stderr.write(str(e)+"\n")
+
+def reviews(data):
+	if data[3] == None:
+		return None	
+	text = data[3]
+	review_id = data[10]
+	rating = data[4]
+	author_name = data[0][1]
+	author_id = data[6]
+	time = data[27]
+	return review(review_id, rating, time, text, author_name, author_id)
