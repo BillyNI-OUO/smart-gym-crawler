@@ -38,6 +38,11 @@ def nearby2(data, i = 1):
 		sys.stderr.write(str(e)+"\n")
 
 def reviews(data):
+	"""
+	Deocde the data from query.reviews()
+	Parameter:
+	data : the data query from src.crawler.query.reviews()
+	"""
 	if data[3] == None:
 		return None	
 	text = data[3]
