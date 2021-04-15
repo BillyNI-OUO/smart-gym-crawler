@@ -1,6 +1,7 @@
 from src.crawler.place import place
 from src.crawler.review import review
 import sys
+import datetime
 def nearby2(data, i = 1):
 	"""
 	Deocde the data from query.nearby2()
@@ -37,18 +38,22 @@ def nearby2(data, i = 1):
 	except Exception as e:
 		sys.stderr.write(str(e)+"\n")
 
-def reviews(data):
+def reviews(data, cid):
 	"""
 	Deocde the data from query.reviews()
 	Parameter:
 	data : the data query from src.crawler.query.reviews()
 	"""
-	if data[3] == None:
-		return None	
-	text = data[3]
-	review_id = data[10]
-	rating = data[4]
-	author_name = data[0][1]
-	author_id = data[6]
-	time = data[27]
-	return review(review_id, rating, time, text, author_name, author_id)
+	try:
+		if data[3] == None:
+			return None	
+		text = data[3]
+		review_id = data[10]
+		rating = data[4]
+		author_name = data[0][1]
+		author_id = data[6]
+		time = datetime.datetime.fromtimestamp(data[27] // 1000).astimezone(datetime.timezone.utc).strftime("%Y-%m-%d %H:%M:%S")
+		return review(review_id, rating, time, text, author_name, author_id, cid)
+	except Exception as e:
+		sys.stderr.write(str(e)+"\n")
+		return None

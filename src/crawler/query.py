@@ -1,7 +1,7 @@
 import requests
 import json
 import re
-from src.crawler import constants
+from src import constants
 
 from src.crawler import decode 
 
@@ -56,7 +56,7 @@ def reviews(cid, max_query_times=1, query_size=199):
 
         reviews_data = data[2]
         for row in reviews_data:
-            review = decode.reviews(row)
+            review = decode.reviews(row, cid)
 
             if review == None:
                 break;
