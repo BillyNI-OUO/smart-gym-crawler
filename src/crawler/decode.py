@@ -25,8 +25,10 @@ def nearby2(data, i = 1):
 		#place_id #226
 		place_id = str(data[0][1][i][14][78])
 		
-		#地址 #503
-		formatted_address = str(data[0][1][i][14][183][0][2][1][0][0])
+		#地址 #19 or #503, 
+		formatted_address = str(data[0][1][i][14][2][0])
+		if formatted_address[0] not in list(range(0, 10)):
+			formatted_address = str(data[0][1][i][14][183][0][2][1][0][0])
 		
 		#cid_1, cid_2 #27
 		ox = data[0][1][i][14][10].split(':')

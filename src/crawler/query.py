@@ -2,10 +2,7 @@ import requests
 import json
 import re
 from src import constants
-
 from src.crawler import decode 
-
-
 from src.crawler.place import place
 from src.crawler.review import review
 
@@ -14,7 +11,7 @@ def pretty(obj):
     with open('sample.json', "w")as f:
         pprint.pprint(obj, f)
 
-def nearby2(location=(22.0108477, 120.7440363), query_size=3, query_times = 1, keyword = constants.KEYWORD):
+def nearby2(location=(22.0108477, 120.7440363), query_size=10, query_times = 1, keyword = constants.KEYWORD):
     """
     Queary the nearby place without APIKEY
     Parameter:
@@ -55,11 +52,13 @@ def reviews(cid, max_query_times=1, query_size=199):
         data = json.loads(raw_text)
 
         reviews_data = data[2]
+        if reviews_data == None:
+            break
         for row in reviews_data:
             review = decode.reviews(row, cid)
 
             if review == None:
-                break;
+                break
             review_info_list.append(review)
 
         if len(reviews_data) < query_size:
