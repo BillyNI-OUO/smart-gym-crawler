@@ -16,7 +16,9 @@ SQLCONFIG={
 }
 
 
-
+QUERY_SIZE = 200
+GRID_WIDTH = 0.5
+COORDINATE_FILEPATH = "./coordinates/"
 
 #The URL-generator for src.crawler.query.nearby2
 def nearby2_url(lat, lng, cnt, query_size = 500,  keyword = KEYWORD):

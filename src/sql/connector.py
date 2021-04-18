@@ -104,9 +104,11 @@ class connector:
 				c.execute(sql)
 				self.con.commit()
 				c.close()
+				return True
 			except Exception as e:
 				sys.stderr.write(str(e)+"\n")
-
+		return False
+		
 	def insert_places(self, places):
 		"""
 		insert multiple places (list) into table
@@ -132,9 +134,11 @@ class connector:
 				c.execute(sql)
 				self.con.commit()
 				c.close()
+				return True
 			except Exception as e:
 				sys.stderr.write(str(e)+"\n")
 
+		return False
 
 	def insert_reviews(self, reviews):
 		"""

@@ -11,7 +11,7 @@ def pretty(obj):
     with open('sample.json', "w")as f:
         pprint.pprint(obj, f)
 
-def nearby2(location=(22.0108477, 120.7440363), query_size=10, query_times = 1, keyword = constants.KEYWORD):
+def nearby2(location=(22.0108477, 120.7440363), query_size=constants.QUERY_SIZE, query_times = 1, keyword = constants.KEYWORD):
     """
     Queary the nearby place without APIKEY
     Parameter:
