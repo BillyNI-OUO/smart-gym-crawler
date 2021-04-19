@@ -26,7 +26,7 @@ class connector:
 		Create the table
 		"""
 		c = self.con.cursor()
-		c.execute("""CREATE TABLE IF NOT EXISTS tplace_info (
+		c.execute("""CREATE TABLE IF NOT EXISTS place_info (
 			pid SERIAL,
 			place_id VARCHAR(100) NOT NULL,
 			cid_1	VARCHAR(50) NOT NULL,
@@ -44,7 +44,7 @@ class connector:
 			)""")
 
 		self.con.commit()
-		c.execute("""CREATE TABLE IF NOT EXISTS treviews_info(
+		c.execute("""CREATE TABLE IF NOT EXISTS reviews_info(
 			rid SERIAL,
 			cid_1	VARCHAR(50) NOT NULL,
 			cid_2	VARCHAR(50) NOT NULL,
@@ -65,7 +65,7 @@ class connector:
 		"""
 		c = self.con.cursor()
 		sql = f"\
-			SELECT cid_1, cid_2 FROM tplace_info WHERE (cid_1, cid_2) = ('{place.cid_1}', '{place.cid_2}')\
+			SELECT cid_1, cid_2 FROM place_info WHERE (cid_1, cid_2) = ('{place.cid_1}', '{place.cid_2}')\
 			"
 		c.execute(sql)
 		if c.fetchone() == None:
@@ -79,7 +79,7 @@ class connector:
 		"""
 		c = self.con.cursor()
 		sql = f"\
-			SELECT review_id FROM treviews_info WHERE (review_id) = ('{review.review_id}')\
+			SELECT review_id FROM reviews_info WHERE (review_id) = ('{review.review_id}')\
 			"
 		c.execute(sql)
 		if c.fetchone() == None:
@@ -95,7 +95,7 @@ class connector:
 		if not self.is_place_exists(place):
 			c = self.con.cursor()
 			sql = f"\
-				INSERT INTO tplace_info\
+				INSERT INTO place_info\
 				(place_id, cid_1, cid_2, name, lat, lng, formatted_address)\
 				VALUES\
 				('{place.place_id}', '{place.cid_1}', '{place.cid_2}', '{place.name}', {place.lat}, {place.lng}, '{place.formatted_address}')\
@@ -125,7 +125,7 @@ class connector:
 
 
 			sql = f"\
-				INSERT INTO treviews_info\
+				INSERT INTO reviews_info\
 				(cid_1, cid_2, text, rating, author_name, author_id, review_id, time)\
 				VALUES\
 				('{review.cid_1}', '{review.cid_2}', '{review.text}', {review.rating}, '{review.author_name}', '{review.author_id}', '{review.review_id}', '{review.time}')\

@@ -14,3 +14,17 @@ def get_coordinate(filepath):
 		return coordinate_list
 	except Exception as e:
 		sys.stderr.write(str(e)+'\n')
+
+def taiwan(filepath):
+	try:
+		coordinate_list = []
+		with open(filepath, 'r') as fp:
+			lines = fp.readlines()
+			for line in lines:
+				line = re.split(r'[,|\s]+', line)
+				line = list(map(float, line[:-1]))
+				coordinate_list.append((line[1], line[0]))
+
+			return coordinate_list
+	except Exception as e:
+		sys.stderr.write(str(e)+'\n')		

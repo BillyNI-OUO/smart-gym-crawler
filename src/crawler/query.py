@@ -35,7 +35,7 @@ def nearby2(location=(22.0108477, 120.7440363), query_size=constants.QUERY_SIZE,
     return place_info_list
 
 
-def reviews(cid, max_query_times=1, query_size=199):
+def reviews(cid, max_query_times=5, query_size=199):
     """
     Queary the reviews by the place's cid
     Parameter:
