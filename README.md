@@ -1,64 +1,86 @@
 # README
-
-[TOC]
-
-## Installation
-
-請確定你是在 Python3 的環境上運行。若是在預設為 Python2 的環境，可以使用 `pip3`以及`python3`。
-
-```bash
-pip install requests
-pip install mysql-connector-python
-pip install numpy
-pip install pandas
+## Introduction
+## 目前架構
 ```
+src 
+|-crawler
+    |-query.py
+    |-decode.py
+    |-place.py
+    |-review.py
+    |-coordinate.py
+    |-grid.py
+|-sql
+    |-connector.py
+constnts.py
 
+```
+## 目前已完成的功能
+### Crawler
+1. *crawler.query* 搜尋經緯度附近的目標
+    a. *nearby2()* 爬目標的基本資料(非API方法)
+    - 以實作place_id, (cid_1, cid_2), name, formatted, 座標
+    - 尚未實作rating, type, user_rating_total, price_level
+    
+    b. *reviews()* 根據爬到的(cid_1, cid_2)去爬評論(非API方法)
+    - text, review_id, rating, author_name, author_id, time
+2. *crawler.decode* Decode非API方法(1.a, 1.b)爬到的資料建立*Place*和*review*物件
+3. *Place*和*Review*實作物件的建立
+4. *grid* 給定範圍，網格式的去呼叫*crawler.query*的方法
+5. *coordinate* 讀/coordinate/裡的座標檔案
+### SQL
+1. *connector* 實作SQL的connector，以正確且安全的方式去操作SQL
+    a. *insert_place* 將place 正確的insert 到database中
+    b. *insert_review* 將revire 正確的insert 到database中
+    c. 還有一些基本的query的操作
+### Constants
+存放會用到一些基本的參數，例如sql sever的ip, username....
+以及一些url的產生函式
+
+
+---
+
+## TODO
+1. API方法的實作
+2. 更多SQL的接頭(? 例如query裡面的資料? 建立新的table(?
+3. decode更多的資料(非API方法中，還可以爬出很多資料^ ^
+4. *coordinate_taiwan*(實作中)
+
+---
 ## Usage
-
-### Grid Search
-
-對一系列的座標範圍進行網格狀搜尋，使用方法如下。先指定搜尋品質，再指定座標範圍檔案。
-
-```bash
-python ./parse.py <quality> <filepath>
-
-e.g.
-python ./parse.py high ./coordinates/台中.txt
-python ./parse.py low ./coordinates/台中.txt
+### Installation
+```python
+pip3 install requests
+pip3 install mysql-connector-python
+pip3 install numpy
 ```
+### Example
 
-- `<quality>`
-  - `high`: 用 `grid_search` 方法，會用到 Google Maps API (會花錢，且需要指定 crawler 使用的 APIKEYS)
-  - `low`: 用 `grid_search2` 方法，不會用到 Google Maps API (不用花錢)，但搜尋品質較低
-- `<filepath>`: 座標範圍檔案位置，檔案內容約略如下。
+搜尋台中某個座標格中的餐廳和評論並輸入到SQL Database中
+```python=
+import src
+import src.crawler as crawler
+from src.sql.connector import connector
+
+#讀取台中的所有座標格
+cor_list = crawler.coordinate.get_coordinate('./coordinates/台中.txt')
+#建立SQL的connector
+con = connector()
+#Initialize Database
+con.init_db()
+
+#這裡取第2個座標格，得到一串Place的list
+l = crawler.grid.search_nearby2(cor_list[2][0], cor_list[2][1])
+
+#對list中所有的place
+for i in l:
+    print(i)
+    #看看有沒有成功insert到Database中
+    if con.insert_place(i):
+        #去爬出Place的評論，得到一串review的list
+        ll = crawler.query.reviews((i.cid_1, i.cid_2))
+        #insert review 到Database中
+        con.insert_reviews(ll)
+
 
 ```
-24.43163, 120.63205	24.40154, 120.62046
-24.43257, 120.62493	24.41209, 120.61205
-24.41756, 120.63892	24.38278, 120.65677
-24.40326, 120.62905	24.37082, 120.656
-24.38114, 120.65224	24.37887, 120.68382
-24.37074, 120.6676	24.36097, 120.70442
-24.39764, 120.59318	24.38763, 120.58794
-...
-```
-
-### 再次搜索
-
-以低品質的 API(不用花錢)的方式，在已知的(存在於 DB `place_info` 中)地點進行 `query_nearby2` 搜尋附近餐廳。
-
-```bash
-python ./parse.py again <start_from_id>
-
-e.g.
-python ./parse.py again 10000
-```
-
-- `<start_from_id>`: 從`place_info`資料表的某個 ID 繼續進行搜索。如指定`100`，則會搜尋 100, 101, 102...。
-
-## Structure
-
-- `crawler.py`: 負責抓取 Google Map 上的資料，可以透過高、低品質的方式抓取。使用高品質的方法時，會需要指定 APIKEYS，也就是要透過 Google Maps API，但要收費!所以盡量使用低品質。
-- `data.py`: 負責與 MySQL DB 連線，以及透過`crawler.py`的函式取得 Google Map 資料。
-- `parse.py`: 當作 command line 工具使用。
-
