@@ -57,7 +57,8 @@ pip3 install numpy
 ### Example
 
 搜尋台中某個座標格中的餐廳和評論並輸入到SQL Database中
-```python=
+
+```python
 import src
 import src.crawler as crawler
 from src.sql.connector import connector
