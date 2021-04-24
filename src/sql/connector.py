@@ -5,6 +5,8 @@ The object used to do the sql stuff safety
 import mysql.connector
 import src.constants as constants
 import sys
+import csv
+import datetime
 class connector:
 
 	def __init__(self):
@@ -71,6 +73,7 @@ class connector:
 		if c.fetchone() == None:
 			c.close()
 			return False
+		c.close()
 		return True
 	
 	def is_review_exists(self, review):
@@ -85,6 +88,7 @@ class connector:
 		if c.fetchone() == None:
 			c.close()
 			return False
+		c.close()
 		return True
 
 
@@ -92,6 +96,7 @@ class connector:
 		"""
 		insert place into table
 		"""
+		success = False
 		if not self.is_place_exists(place):
 			c = self.con.cursor()
 			sql = f"\
@@ -102,11 +107,14 @@ class connector:
 				"
 			try:
 				c.execute(sql)
-				self.con.commit()
-				c.close()
-				return True
+				success = True
 			except Exception as e:
 				sys.stderr.write(str(e)+"\n")
+				success = False
+			finally:
+				self.con.commit()
+				c.close()
+				return success
 		return False
 		
 	def insert_places(self, places):
@@ -120,6 +128,7 @@ class connector:
 		"""
 		insert review into table
 		"""
+		success = False
 		if not self.is_review_exists(review):
 			c = self.con.cursor()
 
@@ -132,13 +141,15 @@ class connector:
 				"
 			try:
 				c.execute(sql)
-				self.con.commit()
-				c.close()
-				return True
+				success = True
 			except Exception as e:
 				sys.stderr.write(str(e)+"\n")
-
-		return False
+				success = False
+			finally:
+				self.con.commit()
+				c.close()
+				return success
+		return success
 
 	def insert_reviews(self, reviews):
 		"""
@@ -149,5 +160,45 @@ class connector:
 
 
 
+	def query_place(self, field, predicate = None):		
+		c = self.con.cursor()
+		sql = f"SELECT {field if field == '*' else ', '.join(field)} from place_info {predicate if predicate != None else ''}"
+		try:
+			c.execute(sql)
+			resultSet = c.fetchall()
+		except Exception as e:
+			sys.stderr.write(str(e)+"\n")
+			resultSet = None
+		finally:
+			c.close()
+		return resultSet			
 
 
+
+	def query_review(self, field, predicate = None):
+		c = self.con.cursor()
+		sql = f"SELECT {field if field == '*' else ', '.join(field)} from reviews_info {predicate if predicate != None else ''}"
+		try:
+			c.execute(sql)
+			resultSet = c.fetchall()
+		except Exception as e:
+			sys.stderr.write(str(e)+"\n")
+			resultSet = None
+		finally:
+			c.close()
+		return resultSet			
+
+
+	def download_query(self, table, field, predicate, filepath):
+		schema = field
+		if table == "place":
+			resultSet = self.query_place(field = field, predicate = predicate)
+		elif table == "reviews":
+			resultSet = self.query_review(field = field, predicate = predicate)
+		
+		filepath += str(round(datetime.datetime.now().timestamp())) + ".csv"
+		with open(filepath, 'w', newline = '')as csvfile:
+			writer = csv.writer(csvfile)
+			writer.writerow(schema)
+			writer.writerows(resultSet)
+		
