@@ -45,5 +45,5 @@ for cor in cor_list:
 			review_list = crawler.query.reviews((place.cid_1, place.cid_2))
 			con.insert_reviews(review_list)
 """
-field = ['cid_1', 'cid_2']
+field = ['cid_1', 'cid']
 con.download_query(field = field, table = 'place', predicate = "WHERE cid_1 = 1445430307838188779", filepath="")
