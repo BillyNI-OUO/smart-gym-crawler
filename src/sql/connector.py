@@ -27,36 +27,40 @@ class connector:
 		Iniitialize the database
 		Create the table
 		"""
+		
 		c = self.con.cursor()
+
 		c.execute("""CREATE TABLE IF NOT EXISTS place_info (
-			pid SERIAL,
-			place_id VARCHAR(100) NOT NULL,
-			cid_1	VARCHAR(50) NOT NULL,
-			cid_2	VARCHAR(50) NOT NULL,
-			hide_id VARCHAR(100),
+			id SERIAL,
+			place_id VARCHAR(27) NOT NULL,
+			cid_1 BIGINT UNSIGNED NOT NULL,
+			cid	BIGINT UNSIGNED NOT NULL,
+			hide_id TEXT,
 			name TEXT NOT NULL,
-			lat VARCHAR(50),
-			lng VARCHAR(50),
+			lat DOUBLE,
+			lng DOUBLE,
 			formatted_address TEXT,
 			user_ratings_total INTEGER,
-			price_level TEXT,
+			price_level TINYINT,
 			rating FLOAT,
 			types TEXT,
-			PRIMARY KEY(cid_1,cid_2)
+			PRIMARY KEY(id ,cid)
 			)""")
 
+
 		self.con.commit()
-		c.execute("""CREATE TABLE IF NOT EXISTS reviews_info(
-			rid SERIAL,
-			cid_1	VARCHAR(50) NOT NULL,
-			cid_2	VARCHAR(50) NOT NULL,
-			rating INTEGER NOT NULL,
+
+		c.execute("""CREATE TABLE IF NOT EXISTS reviews(
+			id SERIAL,
+			cid_1 BIGINT UNSIGNED NOT NULL,
+			cid	BIGINT UNSIGNED NOT NULL,
+			rating TINYINT NOT NULL,
 			time TIMESTAMP NOT NULL,
 			text TEXT NOT NULL,
 			author_name TEXT,
-			author_id VARCHAR(50),
-			review_id VARCHAR(100) NOT NULL,
-			PRIMARY KEY(review_id)
+			author_id TEXT,
+			review_id TEXT NOT NULL,
+			PRIMARY KEY(id, cid)
 			)""")
 		self.con.commit()
 		c.close()
@@ -67,7 +71,7 @@ class connector:
 		"""
 		c = self.con.cursor()
 		sql = f"\
-			SELECT cid_1, cid_2 FROM place_info WHERE (cid_1, cid_2) = ('{place.cid_1}', '{place.cid_2}')\
+			SELECT cid_1, cid FROM place_info WHERE (cid_1, cid) = ('{place.cid_1}', '{place.cid_2}')\
 			"
 		c.execute(sql)
 		if c.fetchone() == None:
@@ -82,7 +86,7 @@ class connector:
 		"""
 		c = self.con.cursor()
 		sql = f"\
-			SELECT review_id FROM reviews_info WHERE (review_id) = ('{review.review_id}')\
+			SELECT review_id FROM reviews WHERE (review_id) = ('{review.review_id}')\
 			"
 		c.execute(sql)
 		if c.fetchone() == None:
@@ -101,9 +105,9 @@ class connector:
 			c = self.con.cursor()
 			sql = f"\
 				INSERT INTO place_info\
-				(place_id, cid_1, cid_2, name, lat, lng, formatted_address)\
+				(place_id, cid_1, cid, name, lat, lng, formatted_address)\
 				VALUES\
-				('{place.place_id}', '{place.cid_1}', '{place.cid_2}', '{place.name}', {place.lat}, {place.lng}, '{place.formatted_address}')\
+				('{place.place_id}', {place.cid_1}, {place.cid_2}, '{place.name}', {place.lat}, {place.lng}, '{place.formatted_address}')\
 				"
 			try:
 				c.execute(sql)
@@ -134,10 +138,10 @@ class connector:
 
 
 			sql = f"\
-				INSERT INTO reviews_info\
-				(cid_1, cid_2, text, rating, author_name, author_id, review_id, time)\
+				INSERT INTO reviews\
+				(cid_1, cid, text, rating, author_name, author_id, review_id, time)\
 				VALUES\
-				('{review.cid_1}', '{review.cid_2}', '{review.text}', {review.rating}, '{review.author_name}', '{review.author_id}', '{review.review_id}', '{review.time}')\
+				({review.cid_1}, {review.cid_2}, '{review.text}', {review.rating}, '{review.author_name}', '{review.author_id}', '{review.review_id}', '{review.time}')\
 				"
 			try:
 				c.execute(sql)
@@ -177,7 +181,7 @@ class connector:
 
 	def query_review(self, field, predicate = None):
 		c = self.con.cursor()
-		sql = f"SELECT {field if field == '*' else ', '.join(field)} from reviews_info {predicate if predicate != None else ''}"
+		sql = f"SELECT {field if field == '*' else ', '.join(field)} from reviews {predicate if predicate != None else ''}"
 		try:
 			c.execute(sql)
 			resultSet = c.fetchall()
@@ -195,7 +199,7 @@ class connector:
 			resultSet = self.query_place(field = field, predicate = predicate)
 		elif table == "reviews":
 			resultSet = self.query_review(field = field, predicate = predicate)
-		
+		print(resultSet)
 		filepath += str(round(datetime.datetime.now().timestamp())) + ".csv"
 		with open(filepath, 'w', newline = '')as csvfile:
 			writer = csv.writer(csvfile)
