@@ -7,8 +7,9 @@ from src.sql.connector import connector
 
 
 con = connector()
-
+"""
 con.init_db()
+"""
 """
 l = crawler.grid.search_nearby2((22.0, 22.0002), (120.7440363, 120.7440563))
 for i in l:
@@ -46,7 +47,32 @@ for cor in cor_list:
 			con.insert_reviews(review_list)
 """
 
-##test
-print('hello')
-field = ['cid_1', 'cid']
-con.download_query(field = field, table = 'place', predicate = "WHERE cid_1 = 1445430307838188779", filepath="")
+"""
+field = ['name', 'cid']
+con.download_query(field = field, table = 'place', predicate = "WHERE cid = 16758945349437698000", filepath="")
+
+"""
+
+
+cids = []
+with open("word_gym_cid.txt", "r") as fp:
+	lines = fp.readlines()
+	for line in lines:
+		cids.append(int(line.split("\n")[0]))
+
+results = []
+field =['name']
+for cid in cids:
+	result = con.query_place(field = field, predicate = f"WHERE cid = {cid}")
+	if result:
+		#results.append(str(result[0][0]))
+		pass
+	else:
+		results.append(cid)
+
+print(f'Should query: {len(cids)}   Actual find: {len(cids)-len(results)}')
+print(f'Correctness: {1-len(results)/len(cids)}')
+print(f"Didn't query's cid: ")
+
+for result in results:
+	print(result)
