@@ -10,7 +10,7 @@ KEYWORD = "汽車經銷商"
 
 SQLCONFIG={
 	'host': '120.126.17.206',        	# 主機名稱
-	'database': 'smart_gym',  			# 資料庫名稱
+	'database': 'smart_car_dealer',  			# 資料庫名稱
 	'user': 'smartuser',            	# 帳號
 	'password': 'pp253&$@'  			# 密碼
 }
