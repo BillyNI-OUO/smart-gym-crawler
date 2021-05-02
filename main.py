@@ -31,7 +31,7 @@ for i in l:
 		ll = crawler.query.reviews((i.cid_1, i.cid_2))
 		con.insert_reviews(ll)
 """
-"""
+
 count = 1
 cor_list = crawler.coordinate.taiwan('./coordinates/台灣.txt')
 for cor in cor_list:
@@ -44,6 +44,8 @@ for cor in cor_list:
 			
 			review_list = crawler.query.reviews((place.cid_1, place.cid_2))
 			con.insert_reviews(review_list)
+
 """
 field = ['cid_1', 'cid']
 con.download_query(field = field, table = 'place', predicate = "WHERE cid_1 = 1445430307838188779", filepath="")
+"""
