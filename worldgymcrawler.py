@@ -9,7 +9,7 @@ import sys
 
 options = Options()
 options.add_argument("--disable-notifications")
-chrome = webdriver.Chrome('/mnt/c/Users/小傑/Desktop/chromedriver_win32/chromedriver.exe', chrome_options=options)
+chrome = webdriver.Chrome('/mnt/c/Users/user/Desktop/final_pro/cowel/Selenium/chromedriver.exe', chrome_options=options)
 
 
 links = []
@@ -31,7 +31,7 @@ for i in range(1, 17):
 
 	time.sleep(1)
 
-print(links)
+##print(links)
 chrome.quit()
 """
 with open('links.txt', "w") as fp:
@@ -60,7 +60,7 @@ for link in links:
 	except Exception as e:
 		sys.stderr.write(str(e)+"\n")
 
-print(cid)
+##print(cid)
 print(len(cid))
 with open('word_gym_cid.txt', 'w') as fp:
 	for i in cid:

@@ -55,19 +55,23 @@ con.download_query(field = field, table = 'place', predicate = "WHERE cid = 1675
 
 
 cids = []
-with open("word_gym_cid.txt", "r") as fp:
+with open("FitnessFac_cid.txt", "r") as fp:
 	lines = fp.readlines()
 	for line in lines:
 		cids.append(int(line.split("\n")[0]))
 
 results = []
-field =['name']
+field =['cid_1']
+not_find=[]
+i=-1
 for cid in cids:
-	result = con.query_place(field = field, predicate = f"WHERE cid = {cid}")
+	i+=1
+	result = con.query_place(field = field, predicate = f"WHERE cid_1 = {cid}")
 	if result:
 		#results.append(str(result[0][0]))
 		pass
 	else:
+		not_find.append(i)
 		results.append(cid)
 
 print(f'Should query: {len(cids)}   Actual find: {len(cids)-len(results)}')
@@ -76,3 +80,17 @@ print(f"Didn't query's cid: ")
 
 for result in results:
 	print(result)
+
+locations=[]
+with open('fitnessfactory_locations.txt','r') as fp:
+	lines=fp.readlines()
+	for line in lines:
+		if line=='\n':
+			pass
+		else:
+			location='健身工廠 '+line.lstrip().strip('\n')
+			if location not in locations and "預售中" not in location:
+				locations.append(location)
+print('Notfound:')
+for i in not_find:
+	print(locations[i])
