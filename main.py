@@ -59,20 +59,28 @@ with open("word_gym_cid.txt", "r") as fp:
 	lines = fp.readlines()
 	for line in lines:
 		cids.append(int(line.split("\n")[0]))
-
+links = []
+with open("links.txt", "r") as fp2:
+	lines = fp2.readlines()
+	for line in lines:
+		links.append(line)
 results = []
+result2 = []
 field =['name']
-for cid in cids:
+for i, cid in enumerate(cids):
 	result = con.query_place(field = field, predicate = f"WHERE cid = {cid}")
 	if result:
 		#results.append(str(result[0][0]))
 		pass
 	else:
 		results.append(cid)
-
+		result2.append(links[i])
 print(f'Should query: {len(cids)}   Actual find: {len(cids)-len(results)}')
 print(f'Correctness: {1-len(results)/len(cids)}')
 print(f"Didn't query's cid: ")
 
 for result in results:
 	print(result)
+with open("word_gym_url.txt", "with")as fp:
+	for result in result2:
+		fp.writelines(result)
