@@ -7,11 +7,12 @@ from src.sql.connector import connector
 import time 
 
 
-con = connector()
 
-con.init_db()
 run_start=time.time()
-l = crawler.grid.search_nearby2((22.0, 25.0002), (120.7440363, 120.7440563))
+l = crawler.grid.search_nearby2(lat_range=(21.8, 25.44), lng_range=(120, 122))
+print("數量：　%d" %(len(l)))
+con = connector()
+con.init_db()
 for i in l:
 	print(i)
 	con.insert_place(i)

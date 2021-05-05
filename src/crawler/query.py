@@ -1,6 +1,7 @@
 import requests
 import json
 import re
+import sys
 from src import constants
 from src.crawler import decode 
 from src.crawler.place import place
@@ -46,11 +47,14 @@ def reviews(cid, max_query_times=5, query_size=199):
 
     review_info_list = []
     for i in range(max_query_times):
-        url = constants.reviews_url(cid, i, query_size)
-        response = requests.request("GET", url, headers=constants.HEADERS)
-        raw_text = response.text.encode('utf8')[4:]
-        data = json.loads(raw_text)
-
+        try:
+            url = constants.reviews_url(cid, i, query_size)
+            response = requests.request("GET", url, headers=constants.HEADERS)
+            raw_text = response.text.encode('utf8')[4:]
+            data = json.loads(raw_text)
+        except Exception as e:
+            sys.stderr.write(str(e)+"\n")
+            continue
         reviews_data = data[2]
         if reviews_data == None:
             break

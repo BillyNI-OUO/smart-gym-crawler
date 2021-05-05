@@ -17,7 +17,7 @@ SQLCONFIG={
 
 
 QUERY_SIZE = 100
-GRID_WIDTH = 0.5
+GRID_WIDTH = 0.1
 COORDINATE_FILEPATH = "./coordinates/"
 
 #The URL-generator for src.crawler.query.nearby2
