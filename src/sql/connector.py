@@ -205,4 +205,49 @@ class connector:
 			writer = csv.writer(csvfile)
 			writer.writerow(schema)
 			writer.writerows(resultSet)
+	
+	def caculate_rating(self):
+		c = self.con.cursor()
+		sql = f"SELECT cid, AVG(rating), COUNT(rating) FROM reviews WHERE cid > 13220927980898481423 GROUP by cid "
+		try:
+			c.execute(sql)
+			resultSet = c.fetchall()
+		except Exception as e:
+			sys.stderr.write(str(e)+"\n")
+			resultSet = None
+		finally:
+			c.close()
+		print(resultSet[:10])
+		self.update_rating(resultSet)
 		
+		
+	def update_rating(self, resultSet):
+		
+
+		for result in resultSet:
+			c = self.con.cursor()
+			#print(result)
+			sql = f"UPDATE place_info SET rating = {result[1]}, user_ratings_total = {result[2]} WHERE cid = {result[0]}"
+			try:
+				c.execute(sql)
+			except Exception as e:
+				sys.stderr.write(str(e)+"\n")
+			finally:
+				self.con.commit()
+				c.close()
+		"""
+		with open("reviews.csv", "r")as csvfile:
+			rows = csv.reader(csvfile)
+			for row in rows:
+				c = self.con.cursor()
+				print(row)
+				sql = f"UPDATE place_info SET rating = {row[1]}, user_ratings_total = {row[2]} WHERE cid = {row[0]}"
+				try:
+					c.execute(sql)
+				except Exception as e:
+					sys.stderr.write(str(e)+"\n")
+					resultSet = None
+				finally:
+					self.con.commit()
+					c.close()
+		"""

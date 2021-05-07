@@ -10,14 +10,14 @@ KEYWORD = "健身房"
 
 SQLCONFIG={
 	'host': '120.126.17.206',        	# 主機名稱
-	'database': 'smart_gym_improve', 	# 資料庫名稱
+	'database': 'smart_restaurant',		# 資料庫名稱
 	'user': 'smartuser',            	# 帳號
 	'password': 'pp253&$@'  			# 密碼
 }
 
 
-QUERY_SIZE = 300
-GRID_WIDTH = 0.5
+QUERY_SIZE = 100
+GRID_WIDTH = 0.1
 COORDINATE_FILEPATH = "./coordinates/"
 
 #The URL-generator for src.crawler.query.nearby2
