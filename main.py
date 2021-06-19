@@ -6,9 +6,28 @@ import src.crawler as crawler
 from src.sql.connector import connector
 
 
-con = connector()
 
-con.init_db()
+
+count = 0
+
+cor_list = crawler.coordinate.get_coordinate('./coordinates/香港.txt')
+for cor in cor_list[100:]:
+	place_list = crawler.grid.search_nearby2(cor[0], cor[1])
+	con = connector()
+	for place in place_list:
+		if place == None:
+			break
+		if con.insert_place(place):
+			print(count)
+			count += 1
+			print(place)
+			review_list = crawler.query.reviews((place.cid_1, place.cid_2))
+			con.insert_reviews(review_list)
+
+
+
+
+
 """
 l = crawler.grid.search_nearby2(lat_range=(21.8, 24), lng_range=(120, 121))
 for i in l:
@@ -51,4 +70,4 @@ field = ['cid_1', 'cid']
 con.download_query(field = field, table = 'place', predicate = "WHERE cid_1 = 1445430307838188779", filepath="")
 """
 
-con.caculate_rating()
+

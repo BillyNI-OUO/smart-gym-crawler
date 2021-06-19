@@ -6,18 +6,18 @@
 #The HTTP header for requests
 HEADERS = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.142 Safari/537.36'}
 
-KEYWORD = "健身房"
+KEYWORD = "restaurant"
 
 SQLCONFIG={
-	'host': '120.126.17.206',        	# 主機名稱
-	'database': 'smart_restaurant',		# 資料庫名稱
-	'user': 'smartuser',            	# 帳號
-	'password': 'pp253&$@'  			# 密碼
+	'host': '120.126.17.206',        			# 主機名稱
+	'database': 'smart_restaurant_HongKong',	# 資料庫名稱
+	'user': 'smartuser',            			# 帳號
+	'password': 'pp253&$@'  					# 密碼
 }
 
 
-QUERY_SIZE = 100
-GRID_WIDTH = 0.1
+QUERY_SIZE = 300
+GRID_WIDTH = 0.05
 COORDINATE_FILEPATH = "./coordinates/"
 
 #The URL-generator for src.crawler.query.nearby2
