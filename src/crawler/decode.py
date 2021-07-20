@@ -36,7 +36,7 @@ def nearby2(data, i = 1):
 		cid_2 = int(ox[1], 16)
 		
 		
-		return place(place_id, cid_1, cid_2, name, lat, lng, formatted_address)
+		return place(place_id, cid_1, cid_2, name, lat, lng, formatted_address, 0)
 	except Exception as e:
 		sys.stderr.write(str(e)+"\n")
 
@@ -59,3 +59,15 @@ def reviews(data, cid):
 	except Exception as e:
 		sys.stderr.write(str(e)+"\n")
 		return None
+
+def buisness(data):
+	try:
+		if data[6][203][1][4][0] == '永久停業':
+			return 1
+		if data[6][203][1][4][0] == '暫停營業':
+			return 2
+		return 0
+	except Exception as e:
+		sys.stderr.write(str(e)+"\n")
+		return 0
+	

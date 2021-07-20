@@ -44,6 +44,7 @@ class connector:
 			price_level TINYINT,
 			rating FLOAT,
 			types TEXT,
+			buisness INT,
 			PRIMARY KEY(id ,cid)
 			)""")
 
@@ -71,7 +72,7 @@ class connector:
 		"""
 		c = self.con.cursor()
 		sql = f"\
-			SELECT cid_1, cid FROM place_info WHERE (cid_1, cid) = ('{place.cid_1}', '{place.cid_2}')\
+			SELECT cid FROM place_info WHERE cid = '{place.cid_2}'\
 			"
 		c.execute(sql)
 		if c.fetchone() == None:
@@ -105,9 +106,9 @@ class connector:
 			c = self.con.cursor()
 			sql = f"\
 				INSERT INTO place_info\
-				(place_id, cid_1, cid, name, lat, lng, formatted_address)\
+				(place_id, cid_1, cid, name, lat, lng, formatted_address, buisness)\
 				VALUES\
-				('{place.place_id}', {place.cid_1}, {place.cid_2}, '{place.name}', {place.lat}, {place.lng}, '{place.formatted_address}')\
+				('{place.place_id}', {place.cid_1}, {place.cid_2}, '{place.name}', {place.lat}, {place.lng}, '{place.formatted_address}', {place.buisness})\
 				"
 			try:
 				c.execute(sql)
@@ -251,3 +252,15 @@ class connector:
 					self.con.commit()
 					c.close()
 		"""
+	
+	def update_buisness(self, cid, tag):
+		c = self.con.cursor()
+
+		sql = f'UPDATE place_info SET buisness = {tag} WHERE cid = {cid}'
+		try:
+			c.execute(sql)
+		except Exception as e:
+			sys.stderr.write(str(e)+"\n")
+		finally:
+			self.con.commit()
+			c.close()
