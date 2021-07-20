@@ -56,12 +56,13 @@ con.download_query(field = field, table = 'place', predicate = "WHERE cid_1 = 14
 
 placeList = con.query_place(['cid_1', 'cid'])
 #print(placeList)
-for place in placeList[:10]:
+for place in placeList[11:12]:
 	#print(place[1])
 	tag = crawler.query.check_business(place[1])
 	#print('tag:'+str(tag))
 	con.update_buisness(place[1], tag)
 	ll = crawler.query.reviews((0,place[1]))
+	#print(ll)
 	con.insert_reviews(ll)
 
 #0x3442a9023d1c224d:0x23c54d0c79a1a1d7

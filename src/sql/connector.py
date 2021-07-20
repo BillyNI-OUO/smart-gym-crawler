@@ -85,17 +85,25 @@ class connector:
 		"""
 		return if the review is existed in table by cid
 		"""
+		exist = False
 		c = self.con.cursor()
 		sql = f"\
-			SELECT review_id FROM reviews WHERE (review_id) = ('{review.review_id}')\
+			SELECT review_id FROM reviews WHERE cid = {review.cid_2}\
 			"
-		c.execute(sql)
-		if c.fetchone() == None:
+		try:
+			c.execute(sql)
+			resultSet = c.fetchall()
+			for reviews in resultSet:
+				if reviews[0] == review.review_id:
+					exist = True
+					break
+			
+		except Exception as e:
+			sys.stderr.write(str(e)+"\n")
+			exist = False
+		finally:
 			c.close()
-			return False
-		c.close()
-		return True
-
+			return exist
 
 	def insert_place(self, place):
 		"""
