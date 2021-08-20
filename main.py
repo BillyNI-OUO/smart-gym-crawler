@@ -53,10 +53,10 @@ for cor in cor_list[5:]:
 field = ['cid_1', 'cid']
 con.download_query(field = field, table = 'place', predicate = "WHERE cid_1 = 1445430307838188779", filepath="")
 """
-
+'''
 placeList = con.query_place(['cid_1', 'cid'])
 #print(placeList)
-for place in placeList[11:12]:
+for place in placeList[160067:]:
 	#print(place[1])
 	tag = crawler.query.check_business(place[1])
 	#print('tag:'+str(tag))
@@ -66,3 +66,40 @@ for place in placeList[11:12]:
 	con.insert_reviews(ll)
 
 #0x3442a9023d1c224d:0x23c54d0c79a1a1d7
+'''
+
+#38457636
+con.execute("""
+REPLACE INTO `aspect_ratings` (
+	`id`,
+	`cid`,
+	`atmosphere_rating`,
+	`atmosphere_count`,
+	`service_rating`,
+	`service_count`,
+	`food_rating`,
+	`food_count`,
+	`value_rating`,
+	`value_count`,
+	`cleanliness_rating`,
+	`cleanliness_count`,
+	`last_update`
+) 
+SELECT
+	`place_info`.`id`,
+	`reviews_aspect`.`cid`,
+	AVG(`reviews_aspect`.`atmosphere_rating`),
+	COUNT(`reviews_aspect`.`atmosphere_rating`),
+	AVG(`reviews_aspect`.`service_rating`),
+	COUNT(`reviews_aspect`.`service_rating`),
+	AVG(`reviews_aspect`.`food_rating`),
+	COUNT(`reviews_aspect`.`food_rating`),
+	AVG(`reviews_aspect`.`value_rating`),
+	COUNT(`reviews_aspect`.`value_rating`),
+	AVG(`reviews_aspect`.`cleanliness_rating`),
+	COUNT(`reviews_aspect`.`cleanliness_rating`),
+	NOW()
+FROM `reviews_aspect`
+LEFT JOIN `place_info` ON `place_info`.`cid` = `reviews_aspect`.`cid`
+GROUP BY `reviews_aspect`.`cid`
+;""")

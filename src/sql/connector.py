@@ -272,3 +272,19 @@ class connector:
 		finally:
 			self.con.commit()
 			c.close()
+            
+
+
+
+	def execute(self, sql):
+		c = self.con.cursor(dictionary=True, buffered=True)
+		resultSet = None
+		try:
+			c.execute(sql)
+			#resultSet = c.fetchall()
+		except Exception as e:
+			sys.stderr.write(str(e)+"\n")
+		finally:
+			self.con.commit()
+			c.close()
+		return resultSet			
