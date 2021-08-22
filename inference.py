@@ -1,3 +1,4 @@
+#! /home/user/anaconda3/envs/billy/bin/python
 # -*- coding: utf-8 -*-
 from rating.model import RatingModel
 import mysql.connector

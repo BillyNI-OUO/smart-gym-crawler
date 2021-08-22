@@ -4,7 +4,7 @@ import src.crawler as crawler
 
 #import src.sql as sql
 from src.sql.connector import connector
-
+from datetime import datetime
 
 con = connector()
 
@@ -18,7 +18,7 @@ for i in l:
 	print(i)
 	ll = crawler.query.reviews((i.cid_1, i.cid_2))
 	con.insert_reviews(ll)
-
+print(ll[0])
 """
 """
 cor_list = crawler.coordinate.get_coordinate('./coordinates/台中.txt')
@@ -67,7 +67,7 @@ for place in placeList[160067:]:
 
 #0x3442a9023d1c224d:0x23c54d0c79a1a1d7
 '''
-
+'''
 #38457636
 con.execute("""
 REPLACE INTO `aspect_ratings` (
@@ -103,3 +103,13 @@ FROM `reviews_aspect`
 LEFT JOIN `place_info` ON `place_info`.`cid` = `reviews_aspect`.`cid`
 GROUP BY `reviews_aspect`.`cid`
 ;""")
+'''
+
+#lastId = con.get_lastId()[0][0]
+#con.text_classify(lastId)
+l = crawler.query.nearby2()
+ll = crawler.query.reviews((l[0].cid_1, l[0].cid_2))
+print(ll[0].time)
+now = datetime.now()
+print(now)
+print(datetime.strptime(ll[0].time, "%Y-%m-%d %H:%M:%S") > datetime.now())

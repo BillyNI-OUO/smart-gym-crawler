@@ -6,8 +6,7 @@ from src import constants
 from src.crawler import decode 
 from src.crawler.place import place
 from src.crawler.review import review
-from lxml import etree
-from bs4 import BeautifulSoup
+
 
 def pretty(obj):
     import pprint
