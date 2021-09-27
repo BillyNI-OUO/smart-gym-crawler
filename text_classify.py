@@ -13,7 +13,7 @@ con = connector()
 
 
 lastId = con.get_lastId()[0][0]
-#lastId = 42728249
+#lastId = 42933658
 con.update_updateTime(updateTime = datetime.now().strftime("%Y-%m-%d %H:%M:%S"), remark = f"lastId: {lastId}")
 
 con.text_classify(lastId)

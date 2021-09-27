@@ -107,9 +107,12 @@ GROUP BY `reviews_aspect`.`cid`
 
 #lastId = con.get_lastId()[0][0]
 #con.text_classify(lastId)
+'''
 l = crawler.query.nearby2()
 ll = crawler.query.reviews((l[0].cid_1, l[0].cid_2))
 print(ll[0].time)
 now = datetime.now()
 print(now)
 print(datetime.strptime(ll[0].time, "%Y-%m-%d %H:%M:%S") > datetime.now())
+'''
+con.update_user_rating_total()

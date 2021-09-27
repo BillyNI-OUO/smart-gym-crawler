@@ -661,3 +661,16 @@ class connector:
 		finally:
 			self.con.commit()
 			c.close()
+	def update_user_rating_total(self):
+		c = self.con.cursor()
+		sql = """UPDATE place_info A
+				INNER JOIN (SELECT cid, COUNT(cid) idcount FROM reviews GROUP BY cid) as B
+					on B.cid = A.cid
+				SET A.user_ratings_total = B.idcount"""
+		try:
+			c.execute(sql)
+		except Exception as e:
+			sys.stderr.out(str(e)+"\n")
+		finally:
+			self.con.commit()
+			c.close()
