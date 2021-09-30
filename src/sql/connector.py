@@ -166,14 +166,20 @@ class connector:
 
 	def insert_reviews(self, reviews):
 		"""
-		insert multiple review (list) into table
+		insert multiple reviews (list) into table
 		"""
 		for review in reviews:
 			self.insert_review(review)
 
 
 
-	def query_place(self, field, predicate = None):		
+	def query_place(self, field, predicate = None):
+		"""
+		Query place from place_info
+		parameter:
+		field		: target field
+		predicate	: predicate
+		"""		
 		c = self.con.cursor()
 		sql = f"SELECT {field if field == '*' else ', '.join(field)} from place_info {predicate if predicate != None else ''}"
 		try:
@@ -189,6 +195,12 @@ class connector:
 
 
 	def query_review(self, field, predicate = None):
+		"""
+		Query place from reviews
+		parameter:
+		field		: target field
+		predicate	: predicate
+		"""	
 		c = self.con.cursor()
 		sql = f"SELECT {field if field == '*' else ', '.join(field)} from reviews {predicate if predicate != None else ''}"
 		try:
@@ -203,10 +215,18 @@ class connector:
 
 
 	def download_query(self, table, field, predicate, filepath):
+		"""
+		Download the query result
+		Parameter:
+		table		: target table (place/review)
+		field		: target field
+		predicate	: predicate
+		filepath	: output filepath
+		"""
 		schema = field
 		if table == "place":
 			resultSet = self.query_place(field = field, predicate = predicate)
-		elif table == "reviews":
+		elif table == "review":
 			resultSet = self.query_review(field = field, predicate = predicate)
 		print(resultSet)
 		filepath += str(round(datetime.datetime.now().timestamp())) + ".csv"
@@ -216,6 +236,10 @@ class connector:
 			writer.writerows(resultSet)
 	
 	def caculate_rating(self):
+		"""
+		Caculating the average rating, and reviews' amount.
+		Update the result.
+		"""
 		c = self.con.cursor()
 		sql = f"SELECT cid, AVG(rating), COUNT(rating) FROM reviews WHERE cid > 13220927980898481423 GROUP by cid "
 		try:
@@ -226,12 +250,13 @@ class connector:
 			resultSet = None
 		finally:
 			c.close()
-		print(resultSet[:10])
 		self.update_rating(resultSet)
 		
 		
 	def update_rating(self, resultSet):
-		
+		"""
+		Update the table from the result of caculating_rating
+		"""
 
 		for result in resultSet:
 			c = self.con.cursor()
@@ -262,6 +287,12 @@ class connector:
 		"""
 	
 	def update_buisness(self, cid, tag):
+		"""
+		Set the place's buisness'tag
+		Parameter:
+		cid	: place's cid
+		tag	: buisness tag (0/1/2)
+		"""
 		c = self.con.cursor()
 
 		sql = f'UPDATE place_info SET buisness = {tag} WHERE cid = {cid}'
@@ -272,11 +303,14 @@ class connector:
 		finally:
 			self.con.commit()
 			c.close()
-            
+			
 
 
 
 	def execute(self, sql):
+		"""
+		Execute SQL instruction
+		"""
 		c = self.con.cursor(dictionary=True, buffered=True)
 		resultSet = None
 		try:
@@ -290,6 +324,9 @@ class connector:
 		return resultSet
 	
 	def query(self, sql):
+		"""
+		Query SQL instruction
+		"""
 		c = self.con.cursor(dictionary=True, buffered=True)
 		resultSet = None
 		try:
@@ -303,6 +340,9 @@ class connector:
 		return resultSet
 	
 	def get_lastId(self):
+		"""
+		Get the last classified review's id
+		"""
 		c = self.con.cursor()
 		lastId = None
 		try:
@@ -316,6 +356,11 @@ class connector:
 			return	lastId
 	
 	def text_classify(self, lastId):
+		"""
+		Classified the review
+		Parameter:
+		lastId : the last classified review's id
+		"""
 		c = self.con.cursor()
 		try:
 			c.execute(f"""
@@ -597,6 +642,12 @@ class connector:
 			c.close()
 
 	def update_updateTime(self, updateTime, remark = None):
+		"""
+		Upadate the last update time
+		Parameter:
+		updateTime		: datetime.strftime("%Y-%m-%d %H:%M:%S")
+		remark			: any comment
+		"""
 		c = self.con.cursor()
 		if remark != None:
 			sql = f"\
@@ -617,8 +668,11 @@ class connector:
 		finally:
 			self.con.commit()
 			c.close()
-            
+			
 	def caculate_average(self):
+		"""
+		Update the average rating after inference
+		"""
 		c = self.con.cursor()
 		sql = """REPLACE INTO `aspect_ratings` (
 					`id`,
@@ -662,6 +716,9 @@ class connector:
 			self.con.commit()
 			c.close()
 	def update_user_rating_total(self):
+		"""
+		Update the user_rating_total 
+		"""
 		c = self.con.cursor()
 		sql = """UPDATE place_info A
 				INNER JOIN (SELECT cid, COUNT(cid) idcount FROM reviews GROUP BY cid) as B

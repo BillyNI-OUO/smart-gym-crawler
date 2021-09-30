@@ -2,6 +2,9 @@ from src import constants
 import re
 import sys
 def get_coordinate(filepath):
+	"""
+	Get the coordinate from 台南.txt等
+	"""
 	try:
 		coordinate_list = []
 		with open(filepath, 'r') as fp:
@@ -16,6 +19,9 @@ def get_coordinate(filepath):
 		sys.stderr.write(str(e)+'\n')
 
 def taiwan(filepath):
+	"""
+	Get the coordinate from 台灣.txt
+	"""
 	try:
 		coordinate_list = []
 		with open(filepath, 'r') as fp:
