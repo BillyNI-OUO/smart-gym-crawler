@@ -21,5 +21,6 @@ del con
 os.system(f'python3 inference.py {lastId}')
 con = connector()
 con.caculate_average()
+con.update_user_rating_total()
 del con
 print("Finish Update!!")
