@@ -61,6 +61,15 @@ def reviews(data, cid):
 		return None
 
 def buisness(data):
+	"""
+	Decode the data from query.check_buisness() and return the tag
+	0 : 正常營業
+	1 : 永久停業
+	2 : 暫停營業
+	Parameter:
+	data : the data from query.check_buisness()
+
+	"""
 	try:
 		if data[6][203][1][4][0] == '永久停業':
 			return 1
