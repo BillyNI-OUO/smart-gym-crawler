@@ -80,3 +80,38 @@ def buisness(data):
 		sys.stderr.write(str(e)+"\n")
 		return 0
 	
+def places(data):
+	try:
+		#print(data[6][2][0])
+		formatted_address = str(data[6][2][0])
+		name = data[6][11] 
+		ox = data[6][10].split(':')
+		cid_1 = int(ox[0],16)
+		cid_2 = int(ox[1], 16)
+		
+		lat = str(data[6][9][2])
+		lng = str(data[6][9][3])
+		place_id = str(data[6][1])
+		
+
+		buisness = 0
+
+		if data[6][203][1][4][0] == '永久停業':
+			buisness = 1
+		elif data[6][203][1][4][0] == '暫停營業':
+			buisness = 2
+
+
+		"""
+		label = data[6][76][1]
+		for i in range(70,80):
+			print(data[6][i])
+
+		print(label)
+		if "餐廳" in label:
+			print("yes")
+		"""
+		return place(place_id, cid_1, cid_2, name, lat, lng, formatted_address, buisness)
+	except Exception as e:
+		sys.stderr.write(str(e)+"\n")
+		return None

@@ -115,4 +115,16 @@ now = datetime.now()
 print(now)
 print(datetime.strptime(ll[0].time, "%Y-%m-%d %H:%M:%S") > datetime.now())
 '''
-con.update_user_rating_total()
+#con.update_user_rating_total()
+
+"""
+Place = crawler.query.place(4438821563071615652)
+print(Place)
+
+con.insert_place(Place)
+ll = crawler.query.reviews((Place.cid_1, Place.cid_2))
+con.insert_reviews(ll)
+"""
+lastupdate = con.query(f"SELECT `lastupdate` FROM `time` ORDER BY `id` DESC LIMIT 1")[0]['lastupdate']
+ll = con.get_feedback_missing_place()
+newlist = list(filter(lambda x : x[1]>lastupdate, ll))

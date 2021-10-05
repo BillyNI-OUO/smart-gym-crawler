@@ -731,3 +731,17 @@ class connector:
 		finally:
 			self.con.commit()
 			c.close()
+
+	def get_feedback_missing_place(self):
+		c = self.con.cursor()
+		sql = "SELECT name, created_at FROM feedback_missing_place"
+		resultSet = None
+		try:
+			c.execute(sql)
+			resultSet = c.fetchall()
+		except Exception as e:
+			sys.stderr.out(str(e)+"\n")
+		finally:
+			self.con.commit()
+			c.close()
+			return resultSet

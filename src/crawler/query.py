@@ -37,7 +37,7 @@ def nearby2(location=(22.0108477, 120.7440363), query_size=constants.QUERY_SIZE,
 	return place_info_list
 
 
-def reviews(cid, max_query_times=5, query_size=199):
+def reviews(cid, max_query_times=30, query_size=199):
 	"""
 	Query the reviews by the place's cid
 	Parameter:
@@ -101,3 +101,17 @@ def check_business(cid):
 	except Exception as e:
 		sys.stderr.write(str(e)+"\n");
 		return 0
+
+def place(cid):
+	try:
+		url = constants.place_url(cid)
+		response = requests.request("GET", url, headers=constants.HEADERS)
+	#print(response.content)
+		raw_text = response.text.encode('utf8')[4:]
+		data = json.loads(raw_text)
+		
+
+		return decode.places(data)
+	except Exception as e:
+		sys.stderr.write(str(e)+"\n");
+		return None
