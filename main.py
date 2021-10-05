@@ -128,3 +128,5 @@ con.insert_reviews(ll)
 lastupdate = con.query(f"SELECT `lastupdate` FROM `time` ORDER BY `id` DESC LIMIT 1")[0]['lastupdate']
 ll = con.get_feedback_missing_place()
 newlist = list(filter(lambda x : x[1]>lastupdate, ll))
+for i in newlist:
+	i[0]
