@@ -8,6 +8,12 @@ from selenium import webdriver
 import time
 import re
 import sys
+import src
+import src.crawler as crawler
+
+#import src.sql as sql
+from src.sql.connector import connector
+from datetime import datetime
 
 con = connector()
 
@@ -24,7 +30,7 @@ def get_cid(keyword):
 	#HEADERS = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.142 Safari/537.36'}
 
 	url = "https://www.google.com/maps/search/"
-	keyword = "三燔"
+	#keyword = "三燔"
 
 	#resp = requests.get(url+keyword, allow_redirects=True, headers = HEADERS)
 	#print(resp.text)
@@ -34,7 +40,7 @@ def get_cid(keyword):
 	results = soup.find_all("a" , class_="a4gq8e-aVTXAb-haAclf-jRmmHf-hSRGPd")
 	link = results[0].get("href")
 	cid = int(re.search(r":0x\w*", link).group()[1:], 16)
-	print(cid)
+	return cid
 	#/html/body/div[3]/div[9]/div[8]/div/div[1]/div/div/div[4]/div[1]/div[1]/div/a
 	#a4gq8e-aVTXAb-haAclf-jRmmHf-hSRGPd
 
@@ -46,12 +52,12 @@ cid_list = []
 for i in newlist:
 	keyword = i[0]
 	cid_list.append(get_cid(keyword))
-
+print(cid_list)
 for cid in cid_list:
-	place = crawler.query.places(cid)
+	place = crawler.query.place(cid)
 	con.insert_place(place)
-	review_list = crawler.query.reviews(places.cid_1, place.cid_2)
-	con.inser_reviews(review_list)
+	review_list = crawler.query.reviews((place.cid_1, place.cid_2))
+	con.insert_reviews(review_list)
 
 
 
