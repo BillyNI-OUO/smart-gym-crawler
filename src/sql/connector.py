@@ -721,9 +721,9 @@ class connector:
 		"""
 		c = self.con.cursor()
 		sql = """UPDATE place_info A
-				INNER JOIN (SELECT cid, COUNT(cid) idcount FROM reviews GROUP BY cid) as B
-					on B.cid = A.cid
-				SET A.user_ratings_total = B.idcount"""
+				INNER JOIN (SELECT cid, COUNT(cid) idcount, AVG(rating) avgrating FROM reviews GROUP BY cid) as B
+				on B.cid = A.cid
+				SET A.user_ratings_total = B.idcount, A.rating = B.avgrating"""
 		try:
 			c.execute(sql)
 		except Exception as e:

@@ -34,12 +34,22 @@ def get_cid(keyword):
 
 	#resp = requests.get(url+keyword, allow_redirects=True, headers = HEADERS)
 	#print(resp.text)
-	chrome.get(url+keyword)
-	time.sleep(2)
-	soup = BeautifulSoup(chrome.page_source, "html.parser")
-	results = soup.find_all("a" , class_="a4gq8e-aVTXAb-haAclf-jRmmHf-hSRGPd")
-	link = results[0].get("href")
-	cid = int(re.search(r":0x\w*", link).group()[1:], 16)
+	cid = None
+	try:
+		chrome.get(url+keyword)
+		time.sleep(5)
+		soup = BeautifulSoup(chrome.page_source, "html.parser")
+		results = soup.find_all("a" , class_="a4gq8e-aVTXAb-haAclf-jRmmHf-hSRGPd")
+		if results == []:
+			link = chrome.current_url
+			cid = int(re.search(r":0x\w*", link).group()[1:], 16)
+		else:
+			link = results[0].get("href")
+			cid = int(re.search(r":0x\w*", link).group()[1:], 16)
+
+	except Exception as e:
+		sys.stderr.write(str(e)+"\n")
+
 	return cid
 	#/html/body/div[3]/div[9]/div[8]/div/div[1]/div/div/div[4]/div[1]/div[1]/div/a
 	#a4gq8e-aVTXAb-haAclf-jRmmHf-hSRGPd
@@ -52,7 +62,6 @@ cid_list = []
 for i in newlist:
 	keyword = i[0]
 	cid_list.append(get_cid(keyword))
-print(cid_list)
 for cid in cid_list:
 	place = crawler.query.place(cid)
 	con.insert_place(place)
