@@ -49,7 +49,7 @@ def get_cid(keyword):
 
 	except Exception as e:
 		sys.stderr.write(str(e)+"\n")
-
+	chrome.quit()
 	return cid
 	#/html/body/div[3]/div[9]/div[8]/div/div[1]/div/div/div[4]/div[1]/div[1]/div/a
 	#a4gq8e-aVTXAb-haAclf-jRmmHf-hSRGPd
