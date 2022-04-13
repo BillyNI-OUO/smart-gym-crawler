@@ -145,12 +145,13 @@ class connector:
 		if not self.is_review_exists(review):
 			c = self.con.cursor()
 
+			text = review.text.replace("'", "''")
 
 			sql = f"\
 				INSERT INTO reviews\
 				(cid_1, cid, text, rating, author_name, author_id, review_id, time)\
 				VALUES\
-				({review.cid_1}, {review.cid_2}, '{review.text}', {review.rating}, '{review.author_name}', '{review.author_id}', '{review.review_id}', '{review.time}')\
+				({review.cid_1}, {review.cid_2}, '{text}', {review.rating}, '{review.author_name}', '{review.author_id}', '{review.review_id}', '{review.time}')\
 				"
 			try:
 				c.execute(sql)
