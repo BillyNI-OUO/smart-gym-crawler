@@ -105,12 +105,12 @@ def check_business(cid):
 def place(cid):
 	try:
 		url = constants.place_url(cid)
+
 		response = requests.request("GET", url, headers=constants.HEADERS)
-	#print(response.content)
 		raw_text = response.text.encode('utf8')[4:]
 		data = json.loads(raw_text)
-		
 
+        
 		return decode.places(data)
 	except Exception as e:
 		sys.stderr.write(str(e)+"\n");
