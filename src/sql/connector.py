@@ -112,11 +112,15 @@ class connector:
 		success = False
 		if not self.is_place_exists(place):
 			c = self.con.cursor()
+
+			name = place.name.replace("'", "''")
+			formatted_address = place.formatted_address.replace("'", "''")
+
 			sql = f"\
 				INSERT INTO place_info\
 				(place_id, cid_1, cid, name, lat, lng, formatted_address, buisness)\
 				VALUES\
-				('{place.place_id}', {place.cid_1}, {place.cid_2}, '{place.name}', {place.lat}, {place.lng}, '{place.formatted_address}', {place.buisness})\
+				('{place.place_id}', {place.cid_1}, {place.cid_2}, '{name}', {place.lat}, {place.lng}, '{formatted_address}', {place.buisness})\
 				"
 			try:
 				c.execute(sql)
@@ -144,13 +148,14 @@ class connector:
 		success = False
 		if not self.is_review_exists(review):
 			c = self.con.cursor()
-
+			text = review.text.replace("'", "''")
+			author_name = review.author_name.replace("'", "''")
 
 			sql = f"\
 				INSERT INTO reviews\
 				(cid_1, cid, text, rating, author_name, author_id, review_id, time)\
 				VALUES\
-				({review.cid_1}, {review.cid_2}, '{review.text}', {review.rating}, '{review.author_name}', '{review.author_id}', '{review.review_id}', '{review.time}')\
+				({review.cid_1}, {review.cid_2}, '{text}', {review.rating}, '{author_name}', '{review.author_id}', '{review.review_id}', '{review.time}')\
 				"
 			try:
 				c.execute(sql)

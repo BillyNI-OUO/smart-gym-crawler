@@ -50,7 +50,7 @@ def reviews_url(cid, cnt, query_size = 199):
 	'''
 
 
-	return f'https://www.google.com/maps/preview/review/listentitiesreviews?authuser=0&hl=zh-TW&gl=tw&pb=!1m2!1y{cid[0]}!2y{cid[1]}!2m2!1i{query_size*cnt}!2i{query_size}'
+	return f'https://www.google.com/maps/preview/review/listentitiesreviews?authuser=0&hl=zh-TW&gl=tw&pb=!1m2!1y{cid[0]}!2y{cid[1]}!2m2!1i{query_size*cnt}!2i{query_size}!3e1!4m5!3b1!4b1!5b1!6b1!7b1!5m2!1siIxVYvWCIYiN-AaPw4DABQ!7e81'
 
 #The URL-generator for src.crawler.query.check_business
 def place_url(cid):

@@ -48,23 +48,26 @@ def reviews(cid, max_query_times=30, query_size=199):
 
 	review_info_list = []
 	for i in range(max_query_times):
-		url = constants.reviews_url(cid, i, query_size)
-		response = requests.request("GET", url, headers=constants.HEADERS)
-		raw_text = response.text.encode('utf8')[4:]
-		data = json.loads(raw_text)
+		try:
+			url = constants.reviews_url(cid, i, query_size)
+			response = requests.request("GET", url, headers=constants.HEADERS)
+			raw_text = response.text.encode('utf8')[4:]
+			data = json.loads(raw_text)
 
-		reviews_data = data[2]
-		if reviews_data == None:
-			break
-		for row in reviews_data:
-			review = decode.reviews(row, cid)
-
-			if review == None:
+			reviews_data = data[2]
+			if reviews_data == None:
 				break
-			review_info_list.append(review)
+			for row in reviews_data:
+				review = decode.reviews(row, cid)
 
-		if len(reviews_data) < query_size:
-			break
+				if review == None:
+					break
+				review_info_list.append(review)
+
+			if len(reviews_data) < query_size:
+				break
+		except Exception as e:
+			sys.stderr.write(str(e)+"\n")
 
 	return review_info_list
 
@@ -113,5 +116,5 @@ def place(cid):
         
 		return decode.places(data)
 	except Exception as e:
-		sys.stderr.write(str(e)+"\n");
+		sys.stderr.write(str(e)+"\n")
 		return None

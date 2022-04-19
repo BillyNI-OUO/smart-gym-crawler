@@ -10,6 +10,15 @@ con = connector()
 
 con.init_db()
 
+l = crawler.grid.search_nearby2(lat_range=(21.9, 22), lng_range=(120.8, 121))
+for i in l:
+	if con.insert_place(i):
+		print(i)
+		ll = crawler.query.reviews((i.cid_1, i.cid_2))
+		con.insert_reviews(ll)
+print(ll[0])
+
+
 """
 l = crawler.grid.search_nearby2(lat_range=(21.9, 22), lng_range=(120.8, 121))
 for i in l:
@@ -132,4 +141,4 @@ newlist = list(filter(lambda x : x[1]>lastupdate, ll))
 for i in newlist:
 	i[0]
 """
-con.update_user_rating_total()
+#con.update_user_rating_total()
