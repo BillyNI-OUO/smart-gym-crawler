@@ -10,13 +10,14 @@ con = connector()
 
 con.init_db()
 
-
-l = crawler.grid.search_nearby2()
+#lat_range=(40.49, 45.01), lng_range=(-71.79, -79.76)
+l = crawler.grid.search_nearby2(lat_range=(40.40, 42.00), lng_range=(-79.79, -71.76))
 for i in l:
-	con.insert_place(i)
-	print(i)
-	ll = crawler.query.reviews((i.cid_1, i.cid_2))
-	con.insert_reviews(ll)
+	if float(i.lat) >= 40 and float(i.lat) <=46 and float(i.lng) >= -80 and float(i.lng) <= -71:
+		if con.insert_place(i):
+			print(i)
+			ll = crawler.query.reviews((i.cid_1, i.cid_2))
+			con.insert_reviews(ll)
 #print(ll[0])
 
 """

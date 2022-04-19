@@ -4,7 +4,7 @@ from src.crawler import query
 import numpy as np
 
 #lat_range=(40.49, 45.01), lng_range=(-71.79, -79.76)
-def search_nearby2(lat_range=(40.49, 41.01), lng_range=(-79.79, -77.76)):
+def search_nearby2(lat_range=(40.49, 41.01), lng_range=(-79.79, -71.76)):
 
 	"""
 	Search the nearby store by grid between lat_range and ln_range with the interval width
