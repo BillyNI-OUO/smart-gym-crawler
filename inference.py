@@ -311,7 +311,7 @@ while True:
     splitted_sen = []
     sid = 0
     for review in reviews:
-        text = review['text']
+        text = str.lower(review['text'])
         review['aspects'] = defaultdict(list)
         review_aspects = tuple(filter(lambda v: review[f'is_{v}'] == 1, ASPECTS))
         for sen in split_review_text_iter(text):
