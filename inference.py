@@ -12,7 +12,7 @@ import sys
 
 BATCH_SIZE = 1000
 count = 0
-last_id = 38457636
+last_id = 0
 if len(sys.argv) > 1:
     if sys.argv[1] != '-f':
         last_id = int(sys.argv[1])
@@ -312,6 +312,7 @@ while True:
     sid = 0
     for review in reviews:
         text = str.lower(review['text'])
+        #print(text)
         review['aspects'] = defaultdict(list)
         review_aspects = tuple(filter(lambda v: review[f'is_{v}'] == 1, ASPECTS))
         for sen in split_review_text_iter(text):
@@ -330,7 +331,6 @@ while True:
         print('count:', count, '\t', 'last index:', last_id)
         count += BATCH_SIZE
         continue
-    
     splitted_emb = bc.encode(splitted_sen)
     splitted_rating = rm.predict_classes_embeddings(splitted_emb)
     

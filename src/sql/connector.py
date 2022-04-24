@@ -368,6 +368,7 @@ class connector:
 		"""
 		c = self.con.cursor()
 		try:
+			print('text classifying')
 			c.execute(f"""
 					INSERT INTO `reviews_aspect`
 					(`id`, `cid`)
@@ -376,10 +377,11 @@ class connector:
 					WHERE
 					`reviews`.`id` > {lastId}
 					AND `reviews`.`text` IS NOT NULL
-					AND `reviews`.`text` NOT LIKE "(由 Google 提供翻譯)%"
+					AND `reviews`.`text` NOT LIKE "%(translated by google)%"
 					;
 			""")
 			self.con.commit()
+			print('checking cleanliness')
 			c.execute(f"""
 					UPDATE `reviews_aspect`
 					LEFT JOIN `reviews` ON `reviews_aspect`.`id` = `reviews`.`id`
@@ -568,7 +570,7 @@ class connector:
 						`reviews`.`text` LIKE '%plumbs%' OR
 						`reviews`.`text` LIKE '%brave%' OR
 						`reviews`.`text` LIKE '%worrisome%' OR
-						`reviews`.`text` LIKE '%slime's%' OR
+						`reviews`.`text` LIKE '%slime''s%' OR
 						`reviews`.`text` LIKE '%dusty%' OR
 						`reviews`.`text` LIKE '%tease%' OR
 						`reviews`.`text` LIKE '%scraped%' OR
@@ -616,7 +618,7 @@ class connector:
 						`reviews`.`text` LIKE '%cursed%' OR
 						`reviews`.`text` LIKE '%muddled%' OR
 						`reviews`.`text` LIKE '%homeliness%' OR
-						`reviews`.`text` LIKE '%sordidness's%' OR
+						`reviews`.`text` LIKE '%sordidness''s%' OR
 						`reviews`.`text` LIKE '%unrealized%' OR
 						`reviews`.`text` LIKE '%fighting%' OR
 						`reviews`.`text` LIKE '%doughy%' OR
@@ -657,7 +659,7 @@ class connector:
 						`reviews`.`text` LIKE '%woodsy%' OR
 						`reviews`.`text` LIKE '%pathetic%' OR
 						`reviews`.`text` LIKE '%safe%' OR
-						`reviews`.`text` LIKE '%housecleaning's%' OR
+						`reviews`.`text` LIKE '%housecleaning''s%' OR
 						`reviews`.`text` LIKE '%unintelligent%' OR
 						`reviews`.`text` LIKE '%loopy%' OR
 						`reviews`.`text` LIKE '%chamberlain%' OR
@@ -757,7 +759,7 @@ class connector:
 						`reviews`.`text` LIKE '%precise%' OR
 						`reviews`.`text` LIKE '%dandy%' OR
 						`reviews`.`text` LIKE '%cleanness%' OR
-						`reviews`.`text` LIKE '%grime's%' OR
+						`reviews`.`text` LIKE '%grime''s%' OR
 						`reviews`.`text` LIKE '%bamboozled%' OR
 						`reviews`.`text` LIKE '%trading%' OR
 						`reviews`.`text` LIKE '%misery%' OR
@@ -812,7 +814,7 @@ class connector:
 						`reviews`.`text` LIKE '%dirty%' OR
 						`reviews`.`text` LIKE '%poker%' OR
 						`reviews`.`text` LIKE '%chipped%' OR
-						`reviews`.`text` LIKE '%plumb's%' OR
+						`reviews`.`text` LIKE '%plumb''s%' OR
 						`reviews`.`text` LIKE '%alike%' OR
 						`reviews`.`text` LIKE '%contaminates%' OR
 						`reviews`.`text` LIKE '%lockean%' OR
@@ -852,7 +854,7 @@ class connector:
 						`reviews`.`text` LIKE '%liveliness%' OR
 						`reviews`.`text` LIKE '%basalt%' OR
 						`reviews`.`text` LIKE '%sturdy%' OR
-						`reviews`.`text` LIKE '%scavenger's%' OR
+						`reviews`.`text` LIKE '%scavenger''s%' OR
 						`reviews`.`text` LIKE '%friendliness%' OR
 						`reviews`.`text` LIKE '%sandstone%' OR
 						`reviews`.`text` LIKE '%oiled%' OR
@@ -889,6 +891,7 @@ class connector:
 					;
 				""")
 			self.con.commit()
+			print('checking value')
 			c.execute(f"""
 						UPDATE `reviews_aspect`
 						LEFT JOIN `reviews` ON `reviews_aspect`.`id` = `reviews`.`id`
@@ -1092,6 +1095,7 @@ class connector:
 						;
 				""")
 			self.con.commit()
+			print('checking service')
 			c.execute(f"""
 						UPDATE `reviews_aspect`
 						LEFT JOIN `reviews` ON `reviews_aspect`.`id` = `reviews`.`id`
@@ -1319,7 +1323,7 @@ class connector:
 							`reviews`.`text` LIKE '%served%' OR
 							`reviews`.`text` LIKE '%flashlights%' OR
 							`reviews`.`text` LIKE '%engineering%' OR
-							`reviews`.`text` LIKE '%host's%' OR
+							`reviews`.`text` LIKE '%host''s%' OR
 							`reviews`.`text` LIKE '%clones%' OR
 							`reviews`.`text` LIKE '%arrogant%' OR
 							`reviews`.`text` LIKE '%duty%' OR
@@ -1338,6 +1342,7 @@ class connector:
 						;
 				""")
 			self.con.commit()
+			print('checking atmosphere')
 			c.execute(f"""
 						UPDATE `reviews_aspect`
 						LEFT JOIN `reviews` ON `reviews_aspect`.`id` = `reviews`.`id`
@@ -1372,7 +1377,7 @@ class connector:
 							`reviews`.`text` LIKE '%ghost%' OR
 							`reviews`.`text` LIKE '%promotional%' OR
 							`reviews`.`text` LIKE '%odor%' OR
-							`reviews`.`text` LIKE '%ambiance's%' OR
+							`reviews`.`text` LIKE '%ambiance''s%' OR
 							`reviews`.`text` LIKE '%bliss%' OR
 							`reviews`.`text` LIKE '%pacing%' OR
 							`reviews`.`text` LIKE '%surrounds%' OR
@@ -1474,7 +1479,7 @@ class connector:
 							`reviews`.`text` LIKE '%effects%' OR
 							`reviews`.`text` LIKE '%spice%' OR
 							`reviews`.`text` LIKE '%illusion%' OR
-							`reviews`.`text` LIKE '%environs's%' OR
+							`reviews`.`text` LIKE '%environs''s%' OR
 							`reviews`.`text` LIKE '%mystic%' OR
 							`reviews`.`text` LIKE '%stench%' OR
 							`reviews`.`text` LIKE '%tone%' OR
@@ -1494,7 +1499,7 @@ class connector:
 							`reviews`.`text` LIKE '%pictorials%' OR
 							`reviews`.`text` LIKE '%depiction%' OR
 							`reviews`.`text` LIKE '%ambiance%' OR
-							`reviews`.`text` LIKE '%ambience's%' OR
+							`reviews`.`text` LIKE '%ambience''s%' OR
 							`reviews`.`text` LIKE '%exhumes%' OR
 							`reviews`.`text` LIKE '%airs%' OR
 							`reviews`.`text` LIKE '%scenery%' OR
@@ -1522,7 +1527,7 @@ class connector:
 							`reviews`.`text` LIKE '%ambiences%' OR
 							`reviews`.`text` LIKE '%seashores%' OR
 							`reviews`.`text` LIKE '%dangers%' OR
-							`reviews`.`text` LIKE '%location's%' OR
+							`reviews`.`text` LIKE '%location''s%' OR
 							`reviews`.`text` LIKE '%diversity%' OR
 							`reviews`.`text` LIKE '%environs%' OR
 							`reviews`.`text` LIKE '%lipstick%' OR
@@ -1562,6 +1567,7 @@ class connector:
 						;
 				""")
 			self.con.commit()
+			print('checking food')
 			c.execute(f"""
 						UPDATE `reviews_aspect`
 						LEFT JOIN `reviews` ON `reviews_aspect`.`id` = `reviews`.`id`
@@ -1696,7 +1702,7 @@ class connector:
 							`reviews`.`text` LIKE '%martini%' OR
 							`reviews`.`text` LIKE '%barbecue%' OR
 							`reviews`.`text` LIKE '%yuppy%' OR
-							`reviews`.`text` LIKE '%appetizer's%' OR
+							`reviews`.`text` LIKE '%appetizer''s%' OR
 							`reviews`.`text` LIKE '%gems%' OR
 							`reviews`.`text` LIKE '%game%' OR
 							`reviews`.`text` LIKE '%spicy%' OR
@@ -1897,9 +1903,9 @@ class connector:
 							`reviews`.`text` LIKE '%crisp%' OR
 							`reviews`.`text` LIKE '%croissants%' OR
 							`reviews`.`text` LIKE '%splendid%' OR
-							`reviews`.`text` LIKE '%budweiser's%' OR
+							`reviews`.`text` LIKE '%budweiser''s%' OR
 							`reviews`.`text` LIKE '%chummy%' OR
-							`reviews`.`text` LIKE '%takeout's%' OR
+							`reviews`.`text` LIKE '%takeout''s%' OR
 							`reviews`.`text` LIKE '%inspected%' OR
 							`reviews`.`text` LIKE '%greasy%' OR
 							`reviews`.`text` LIKE '%stance%' OR
@@ -2053,7 +2059,7 @@ class connector:
 							`reviews`.`text` LIKE '%organic%' OR
 							`reviews`.`text` LIKE '%offerings%' OR
 							`reviews`.`text` LIKE '%custards%' OR
-							`reviews`.`text` LIKE '%season's%' OR
+							`reviews`.`text` LIKE '%season''s%' OR
 							`reviews`.`text` LIKE '%glue%' OR
 							`reviews`.`text` LIKE '%toothy%' OR
 							`reviews`.`text` LIKE '%baked%' OR

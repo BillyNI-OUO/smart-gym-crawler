@@ -11,12 +11,11 @@ from datetime import datetime
 
 con = connector()
 
+#lastId = con.get_lastId()[0][0]
+lastId = 0
+#con.update_updateTime(updateTime = datetime.now().strftime("%Y-%m-%d %H:%M:%S"), remark = f"lastId: {lastId}")
 
-lastId = con.get_lastId()[0][0]
-#lastId = 42933658
-con.update_updateTime(updateTime = datetime.now().strftime("%Y-%m-%d %H:%M:%S"), remark = f"lastId: {lastId}")
-
-con.text_classify(lastId)
+#con.text_classify(lastId)
 del con
 os.system(f'python3 inference.py {lastId}')
 con = connector()

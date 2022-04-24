@@ -10,7 +10,7 @@ KEYWORD = "餐廳"
 
 SQLCONFIG={
 	'host': '140.114.53.129',        	# 主機名稱
-	'database': 'smart_restaurant',		# 資料庫名稱
+	'database': 'smart_restaurant_NewYork',		# 資料庫名稱
 	'user': 'smartuser',            	# 帳號
 	'password': 'pp253&$@'  			# 密碼
 }
